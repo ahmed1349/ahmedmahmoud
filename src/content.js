@@ -18,7 +18,7 @@ export const content = {
       first: "Ahmed",
       last: "Mahmoud",
       text: "Graphic designer and video editor creating bold visual identities, engaging content, and cinematic experiences.",
-      work: "Explore My Work",
+      work: "See My Work",
       contact: "Contact Me",
       imageAlt:
         "Ahmed Mahmoud in a neon studio, surrounded by design tools, film, and color grading",
