@@ -6,7 +6,33 @@ import { Icon } from "../icons.jsx"
 export default function Hero() {
   const { lang, t } = useApp()
   const cameraRef = useRef(null)
+  const actionsRef = useRef(null)
   const whatsapp = linkHref("whatsapp", lang)
+
+  useEffect(() => {
+    const actions = actionsRef.current
+    const grid = actions?.closest(".hero-grid")
+    if (!actions || !grid) return
+
+    const apply = () => {
+      const mobile = window.matchMedia("(max-width: 820px)").matches
+      if (!mobile) {
+        grid.style.removeProperty("--actions-w")
+        return
+      }
+      grid.style.setProperty("--actions-w", `${actions.offsetWidth}px`)
+    }
+
+    apply()
+    const observer = new ResizeObserver(apply)
+    observer.observe(actions)
+    window.addEventListener("resize", apply)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener("resize", apply)
+      grid.style.removeProperty("--actions-w")
+    }
+  }, [lang])
 
   useEffect(() => {
     const node = cameraRef.current
@@ -34,7 +60,6 @@ export default function Hero() {
               <span className="tool tool-ai">Ai</span>
               <span className="tool tool-pr">Pr</span>
             </span>
-            <span>16:9</span>
             <span className="latin-name">AHMED MAHMOUD</span>
           </div>
           <div className="hero-grid">
@@ -45,7 +70,7 @@ export default function Hero() {
                 <span className="accent-line">{t.hero.last}</span>
               </h1>
               <p className="hero-text">{t.hero.text}</p>
-              <div className="hero-actions">
+              <div className="hero-actions" ref={actionsRef}>
                 <a className="btn btn-shutter" href="#work">
                   <span className="btn-shutter-fx" aria-hidden="true">
                     <span className="btn-blade btn-blade-top" />
